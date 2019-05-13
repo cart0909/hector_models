@@ -29,15 +29,15 @@
   <gazebo reference="${name}_left_camera_frame">
     <sensor type="multicamera" name="stereo_camera">
       <!-- see MultiSenseSLPlugin.h for available modes -->
-      <update_rate>30.0</update_rate>
+      <update_rate>${update_rate}</update_rate>
       <camera name="left">
         <!-- Spec sheet says 80deg X 45deg @ 1024x544pix.  Based on feedback
              from teams, we're instead doing 80deg X 80deg @ 800x800pix. -->
-        <horizontal_fov>1.3962634</horizontal_fov>
+        <horizontal_fov>${hfov * M_PI/180.0}</horizontal_fov>
         <image>
-          <width>800</width>
-          <height>800</height>
-          <format>R8G8B8</format>
+          <width>${res_x}</width>
+          <height>${res_y}</height>
+          <format>${image_format}</format> <!-- R8B8G8 -->
         </image>
         <clip>
           <near>0.02</near>
@@ -59,11 +59,11 @@
         <pose>0 ${-baseline} 0 0 0 0</pose>
         <!-- Spec sheet says 80deg X 45deg @ 1024x544pix.  Based on feedback
              from teams, we're instead doing 80deg X 80deg @ 800x800pix. -->
-        <horizontal_fov>1.3962634</horizontal_fov>
+        <horizontal_fov>${hfov * M_PI/180.0}</horizontal_fov>
         <image>
-          <width>800</width>
-          <height>800</height>
-          <format>R8G8B8</format>
+          <width>${res_x}</width>
+          <height>${res_y}</height>
+          <format>${image_format}</format>
         </image>
         <clip>
           <near>0.02</near>
@@ -83,8 +83,8 @@
       </camera>
       <plugin name="stereo_camera_controller" filename="libgazebo_ros_multicamera.so">
         <cameraName>${name}</cameraName>
-        <imageTopicName>image_raw</imageTopicName>
-        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <imageTopicName>${ros_topic}</imageTopicName>
+        <cameraInfoTopicName>${cam_info_topic}</cameraInfoTopicName>
         <frameName>${name}_left_camera_optical_frame</frameName>
         <!--<rightFrameName>right_camera_optical_frame</rightFrameName>-->
         <hackBaseline>${baseline}</hackBaseline>
